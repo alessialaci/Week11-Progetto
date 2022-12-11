@@ -20,12 +20,7 @@ import { FavoritesService } from 'src/app/services/favorites.service';
         <div class="card-body text-center">
           <h5 class="card-title">{{ movie.title }}</h5>
             <div>
-              <button type="button" class="btn text-light mx-2" (click)="like(movie.id, 4)"><i class="bi bi-suit-heart-fill"
-              [ngClass]="{
-                'text-danger': heart == true,
-                'text-light': heart == false
-                }"></i></button>
-              <!-- <button type="button" class="btn text-light mx-2"><i class="bi bi-eye-fill"></i></button> -->
+              <button type="button" class="btn {{ movie.like ? 'text-danger' : 'text-light' }} mx-2" (click)="like(movie.id, $event)"><i class="bi bi-suit-heart-fill"></i></button>
             </div>
         </div>
       </div>
@@ -33,26 +28,20 @@ import { FavoritesService } from 'src/app/services/favorites.service';
   `,
     styles: [
         `
-    .card {
-      background-color: #100f0fad;
-      &:hover {
-        animation: scale 0.4s ease;
-      }
-    }
-
-    @keyframes scale {
-        0% {transform: scale(1);}
-        100% {transform: scale(1.1);}
-    }
-    `
+        .card {
+        background-color: #100f0fad;
+        transition: all .3s ease-in-out;
+            &:hover {
+                transform: scale(1.1)
+            }
+        }
+        `
     ]
 })
 
 export class HomeComponent implements OnInit {
 
-    heart: boolean = false;
-
-    sub!: Subscription | undefined;
+    sub: Subscription | undefined;
     movies: Movie[] | undefined;
     userdata: any = [];
     favorites: Favorite[] | undefined;
@@ -62,6 +51,7 @@ export class HomeComponent implements OnInit {
     ngOnInit(): void {
         this.getFilms();
         this.getProfile();
+        this.load();
     }
 
     getFilms() {
@@ -75,26 +65,52 @@ export class HomeComponent implements OnInit {
         this.userdata = JSON.parse(userLogged);
     }
 
-    like(movie: number, i: number) {
-        this.heart = true;
+    load() {
+        this.moviesSrv.getMovies().subscribe(movies => {
+            this.movies = movies;
+            if (this.userdata.user.id !== null) {
+                this.favoriteSrv.getFavorites().subscribe(fav => {
+                    this.movies = this.movies!.map(movie => {
+                        if (fav.find(value => value.movieId === movie.id && value.userId === this.userdata.user.id)) {
+                            movie.like = true;
+                            movie.userId = this.userdata.user.id;
+                        }
+                        return movie;
+                    })
+                })
+            }
+
+        })
+    }
+
+    like(movie: number, event: any) {
         this.sub = this.favoriteSrv.getFavorites().subscribe((fav) => {
             this.favorites = fav;
-            if (!fav.some(item => item.movieId === movie && item.userId === this.userdata.user.id)) {
+            if (fav.find(item => item.movieId === movie && item.userId === this.userdata.user.id)) {
+                event.target.classList.remove('text-danger');
+                event.target.classList.add('text-light');
+
+                const item = fav.find(item => item.movieId === movie && item.userId === this.userdata.user.id);
+                const id = item ? item.id : undefined;
+
+                this.sub = this.favoriteSrv.deleteFavorite(id!).subscribe(() => {
+                    console.log('Elemento rimosso dai preferiti');
+                });
+            } else {
+                event.target.classList.add('text-danger');
+                event.target.classList.remove('text-light');
+
                 let newFavorite: {
                     movieId: number,
-                    userId: number,
+                    userId: number
                 } = {
                     movieId: movie,
                     userId: this.userdata.user.id
                 }
-                this.sub = this.favoriteSrv.postFavorites(newFavorite).subscribe((ris) => {
-                    console.log(ris);
-                });
-            } else {
-                this.sub = this.favoriteSrv.deleteFavorite(i).subscribe((ris) => {
-                    console.log(ris);
-                });
 
+                this.sub = this.favoriteSrv.postFavorites(newFavorite).subscribe(() => {
+                    console.log('Elemento aggiunto ai preferiti');
+                });
             }
         });
     }

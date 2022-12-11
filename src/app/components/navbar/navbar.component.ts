@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
-  selector: 'app-navbar',
-  template: `
+    selector: 'app-navbar',
+    template: `
     <nav class="navbar navbar-expand-lg sticky-top">
       <div class="container">
         <a class="navbar-brand" [routerLink]="['/']"><img src="../../assets/img/logo.png" alt="Logo"></a>
@@ -13,11 +13,11 @@ import { AuthService } from 'src/app/auth/auth.service';
         <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link text-light mx-3 my-2" aria-current="page" [routerLink]="['/']" routerLinkActive="active"
+                <a class="nav-link text-muted mx-3 my-2" aria-current="page" [routerLink]="['/']" routerLinkActive="active"
                         [routerLinkActiveOptions]="{ exact: true }">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-light mx-3 my-2" [routerLink]="['/profile']">Profilo</a>
+                <a class="nav-link text-muted mx-3 my-2" [routerLink]="['/profile']" routerLinkActive="active">Account</a>
               </li>
               <button type="submit" class="btn btn-danger mx-3 my-2" (click)="logout()">Logout</button>
             </ul>
@@ -25,8 +25,8 @@ import { AuthService } from 'src/app/auth/auth.service';
       </div>
     </nav>
   `,
-  styles: [
-    `
+    styles: [
+        `
     nav {
       background-color: #100f0fad;
     }
@@ -34,18 +34,22 @@ import { AuthService } from 'src/app/auth/auth.service';
     .navbar-brand img {
       width: 7em;
     }
+
+    .active {
+        color: white !important;
+    }
     `
-  ]
+    ]
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private authSrv: AuthService) { }
+    constructor(private authSrv: AuthService) { }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
-  logout() {
-    this.authSrv.logout();
-  }
+    logout() {
+        this.authSrv.logout();
+    }
 
 }

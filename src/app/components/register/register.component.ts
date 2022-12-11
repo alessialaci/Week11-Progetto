@@ -3,10 +3,9 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 
-
 @Component({
-  selector: 'app-register',
-  template: `
+    selector: 'app-register',
+    template: `
     <div id="background" class="container-fluid d-flex justify-content-center align-items-center">
         <div>
             <img src="../../assets/img/logo.png" class="top-0 start-0 position-absolute" alt="Logo">
@@ -36,8 +35,8 @@ import { AuthService } from 'src/app/auth/auth.service';
         </div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
     #background {
       height: 100vh;
       background-image: url('../../../assets/img/cover.png');
@@ -70,24 +69,23 @@ import { AuthService } from 'src/app/auth/auth.service';
       }
     }
     `
-  ]
+    ]
 })
+
 export class RegisterComponent implements OnInit {
 
-  constructor(private authSrv: AuthService, private router: Router) { }
+    constructor(private authSrv: AuthService, private router: Router) { }
 
-  ngOnInit(): void {
-  }
-
-  async onsubmit(form: NgForm) {
-    console.log(form.value)
-    try {
-      await this.authSrv.registration(form.value).toPromise()
-      this.router.navigate(['/login'])
-    } catch (error) {
-      console.error(error)
-
+    ngOnInit(): void {
     }
-  }
+
+    async onsubmit(form: NgForm) {
+        try {
+            await this.authSrv.registration(form.value).toPromise()
+            this.router.navigate(['/login'])
+        } catch (error) {
+            console.error(error)
+        }
+    }
 
 }

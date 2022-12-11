@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-profile',
-  template: `
+    selector: 'app-profile',
+    template: `
     <app-navbar></app-navbar>
     <div class="text-center text-light m-5">
         <h1 class="mb-5">User Details</h1>
@@ -10,8 +10,8 @@ import { Component, OnInit } from '@angular/core';
         <p>Email: {{ userdata.user.email }}</p>
     </div>
   `,
-  styles: [
-  ]
+    styles: [
+    ]
 })
 
 export class ProfileComponent implements OnInit {

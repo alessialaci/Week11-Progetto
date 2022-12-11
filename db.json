@@ -7,19 +7,28 @@
       "id": 1
     },
     {
-      "email": "erasmo@piccoli.it",
-      "password": "$2a$10$81mVrMDgWxsAyhJIBO7xEe02GxSK4FEaMmHd7NgLLOnHlGrtCpa1W",
-      "name": "Erasmo",
+      "email": "super@mario.com",
+      "password": "$2a$10$0ZddF/KdeYUNMQbyNt6CfucnHlJzB7IYSZ6yCzZoRU1HInM8obzs2",
+      "name": "Mario",
       "id": 2
-    },
-    {
-      "email": "era91@gmail.com",
-      "password": "$2a$10$bM5zO5GGS8g6v3M82RQsxuQcXXmPxj59whozh1MIpWqdjG7/X63Q2",
-      "name": "erasmo",
-      "id": 3
     }
   ],
   "favorites": [
+    {
+      "movieId": 527774,
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "movieId": 460465,
+      "userId": 1,
+      "id": 2
+    },
+    {
+      "movieId": 567189,
+      "userId": 2,
+      "id": 3
+    }
   ],
   "genres": [
     {

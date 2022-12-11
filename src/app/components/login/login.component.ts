@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgForm} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 
@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/auth/auth.service';
         <div class="card text-muted text-center px-4">
             <div class="card-body">
                 <h1 class="card-title text-light mt-2 mb-5">Login</h1>
-                <form #form="ngForm" (ngSubmit)="accedi(form)">
+                <form #form="ngForm" (ngSubmit)="login(form)">
                     <div class="form-group my-3">
                         <label for="email" class="form-label">Email address</label>
                         <input name="email" type="email" class="form-control bg-dark text-light border-secondary" id="email" required ngModel>
@@ -67,6 +67,7 @@ import { AuthService } from 'src/app/auth/auth.service';
     `
   ]
 })
+
 export class LoginComponent implements OnInit {
 
   constructor(private authSrv: AuthService, private router: Router) { }
@@ -74,13 +75,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async accedi(form: NgForm) {
-    console.log(form.value);
+  async login(form: NgForm) {
     try {
-      await this.authSrv.login(form.value).toPromise()
-      this.router.navigate([''])
+      await this.authSrv.login(form.value).toPromise();
+      this.router.navigate(['']);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 

@@ -1,5 +1,7 @@
 export interface Movie {
   id: number,
   poster_path: string,
-  title: string
+  title: string,
+  like: boolean,
+  userId: number
 }
